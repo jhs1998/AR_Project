@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ArrowScript : MonoBehaviour
 {
-    public float destructionDelay = 5.0f;
+    public float destroyTime = 5.0f;
 
     // 생성 5초후 제거
     void Start()
     {
-        Destroy(gameObject, destructionDelay);
+        Destroy(gameObject, destroyTime);
     }
     // 다른 오브젝트와 충돌시 제거
     void OnTriggerEnter2D(Collider2D other)

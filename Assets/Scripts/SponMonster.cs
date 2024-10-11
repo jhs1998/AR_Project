@@ -30,7 +30,7 @@ public class SponMonster : MonoBehaviour
         {
             Pose hitPose = hits[0].pose;
             // 몬스터 180도 회전
-            Quaternion adjustedRotation = hitPose.rotation * Quaternion.Euler(0, 180, 0);
+            Quaternion adjustedRotation = hitPose.rotation * Quaternion.Euler(0, 0, 0);
             Instantiate(monsterPrefab, hitPose.position, hitPose.rotation);
             ismonster = true;
         }

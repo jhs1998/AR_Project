@@ -8,14 +8,7 @@ public class Shooter : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IP
 {
     // 발사체 프리펩
     [SerializeField] GameObject shootPrefab;
-    // 몬스터 중류는 두가지를 넣어줄것
-    [SerializeField] GameObject monsterPrefab;
-
-    [SerializeField] ARRaycastManager raycastManager;
     
-    // 몬스터 소환 유무
-    public bool ismonster = false;
-
     // 버튼의 눌림 유무
     public bool isButton = false;
 
@@ -36,23 +29,7 @@ public class Shooter : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IP
             // 최대 충전 제한
             chargeTime = Mathf.Clamp(chargeTime, 0, maxchargeTime);
         }
-    }
-
-    public void SponMonster()
-    {
-        Ray ray = new Ray();
-        ray.origin = Camera.main.transform.position;
-        ray.direction = Camera.main.transform.forward;
-
-        List<ARRaycastHit> hits = new List<ARRaycastHit> ();
-        raycastManager.Raycast(ray, hits);
-
-        if (ismonster != true && raycastManager.Raycast(ray, hits))
-        {
-            Instantiate(monsterPrefab, hits[0].pose.position, hits[0].pose.rotation);
-            ismonster = true;
-        }
-    }
+    }    
 
     // 버튼이 눌릴 때 실행
     public void OnPointerDown(PointerEventData eventData)

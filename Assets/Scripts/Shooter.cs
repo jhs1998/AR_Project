@@ -13,7 +13,7 @@ public class Shooter : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IP
     public bool isButton = false;
 
     // 최대 발사체 속도
-    public float maxShootSpeed = 20f;
+    public float maxShootSpeed = 30f;
     // 최대 충전 시간
     public float maxchargeTime = 3f;
     // 충전 시간
@@ -63,8 +63,9 @@ public class Shooter : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IP
     {
         float shootSpeed = Mathf.Lerp(0, maxShootSpeed, chargeTime / maxchargeTime);
 
-        GameObject ball = Instantiate(shootPrefab, Camera.main.transform.position, Camera.main.transform.rotation);
-        Rigidbody rigidbody = ball.GetComponent<Rigidbody>();
+        GameObject arrow = Instantiate(shootPrefab, Camera.main.transform.position, Camera.main.transform.rotation);
+        arrow.transform.Rotate(90, 0, 0);
+        Rigidbody rigidbody = arrow.GetComponent<Rigidbody>();
         rigidbody.velocity = shootSpeed * Camera.main.transform.forward;
     }
 }

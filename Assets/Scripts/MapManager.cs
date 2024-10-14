@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections;
-using UnityEngine.XR.ARSubsystems;
+using UnityEngine.SceneManagement; // SceneManager 사용을 위해 추가
 
 public class MapManager : MonoBehaviour
 {
@@ -14,11 +14,12 @@ public class MapManager : MonoBehaviour
     public int mapWidth = 640; // 지도 너비 (픽셀)
     public int mapHeight = 640; // 지도 높이 (픽셀)
     public string strAPIKey = ""; // API 키
-    public GameObject characterPrefab; // 캐릭터 프리펩
+    public GameObject enemyButtonPrefab; // 적 역할 버튼 프리펩
 
     private GPS_Manager gpsManager; // GPS_Manager 인스턴스를 저장할 변수
     private double save_latitude = 0; // 이전 위도
     private double save_longitude = 0; // 이전 경도
+    public int enemynum;
 
     private void Start()
     {
@@ -34,8 +35,8 @@ public class MapManager : MonoBehaviour
 
         if (gpsManager == null)
         {
-        Debug.LogError("GPS_Manager 인스턴스를 찾을 수 없습니다. 올바르게 설정했는지 확인하세요.");
-        return; // GPS_Manager가 없으면 실행안함
+            Debug.LogError("GPS_Manager 인스턴스를 찾을 수 없습니다. 올바르게 설정했는지 확인하세요.");
+            return; // GPS_Manager가 없으면 실행안함
         }
 
         StartCoroutine(WaitForSecond());
@@ -61,7 +62,6 @@ public class MapManager : MonoBehaviour
 
     IEnumerator LoadMap(double latitude, double longitude)
     {
-        
         // 지도 API 요청 URL 제작
         string url = $"https://maps.googleapis.com/maps/api/staticmap?center={latitude},{longitude}&zoom={zoom}&size={mapWidth}x{mapHeight}&key={strAPIKey}";
 
@@ -84,17 +84,12 @@ public class MapManager : MonoBehaviour
                 if (texture != null)
                 {
                     Debug.Log("Texture successfully downloaded and applied.");
-                    mapRawImage.texture = texture;
-
-                    // 캐릭터 오브젝트를 위치에 배치
-                    PlaceCharacter(latitude, longitude);
-                }
-                if (texture != null)
-                {
-                    Debug.Log("Texture successfully downloaded and applied.");
                     if (mapRawImage != null)
                     {
                         mapRawImage.texture = texture;
+
+                        // 랜덤 적 버튼 배치
+                        SpawnRandomEnemyButtons(3); // 3개의 적 버튼을 랜덤하게 배치
                     }
                     else
                     {
@@ -107,27 +102,32 @@ public class MapManager : MonoBehaviour
                 }
             }
         }
-
     }
 
-    Vector2 LatLongToScreenPos(double latitude, double longitude)
+    void SpawnRandomEnemyButtons(int count)
     {
-        // 지도에서 중앙 위도, 경도
-        double mapCenterLat = save_latitude;
-        double mapCenterLon = save_longitude;
+        for (int i = 0; i < count; i++)
+        {
+            if (enemynum < 3) 
+            {
+                enemynum += 1;
 
-        // 화면 크기
-        float width = mapWidth;
-        float height = mapHeight;
+                // 랜덤 위치 생성
+                float randomX = Random.Range(0, mapWidth);
+                float randomY = Random.Range(0, mapHeight);
 
-        // 위도와 경도 차이 계산
-        double latDiff = latitude - mapCenterLat;
-        double lonDiff = longitude - mapCenterLon;
+                // 버튼 생성
+                GameObject enemyButton = Instantiate(enemyButtonPrefab);
+                enemyButton.transform.SetParent(mapRawImage.transform, false); 
+                enemyButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(randomX - (mapWidth / 2), randomY - (mapHeight / 2)); // 랜덤 위치 조정
 
-        // 픽셀 좌표로 변환
-        float xPos = (float)((lonDiff * (width / 360)) + (width / 2));
-        float yPos = (float)((latDiff * (height / 180)) + (height / 2));
-
-        return new Vector2(xPos, yPos);
+                // EnemyButton 스크립트 초기화
+                EnemyButton enemyButtonScript = enemyButton.GetComponent<EnemyButton>();
+                if (enemyButtonScript != null)
+                {
+                    enemyButtonScript.Initialize(enemynum); // 적 버튼 인덱스 초기화
+                }
+            }
+        }
     }
 }

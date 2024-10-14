@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SlimeScript : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class SlimeScript : MonoBehaviour
                     animator.SetTrigger("GetHit");
                     // Die 애니메이션 실행
                     animator.SetTrigger("Die");
+                    SceneManager.LoadScene("MapScene");
                     Destroy(gameObject, monsterdowntime);
                     break;
             }

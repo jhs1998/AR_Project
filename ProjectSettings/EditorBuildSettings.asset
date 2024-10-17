@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MapScene.unity
-    guid: 09e1261a8e712f046b0fcfea8ea16f5a
-  - enabled: 1
     path: Assets/Scenes/BattleScene01.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/MapScene.unity
+    guid: 09e1261a8e712f046b0fcfea8ea16f5a
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 397951bcf9252ac4c8c05e9433afc528, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: b4341eaaca8bd934faa59b7b04995b8b, type: 2}

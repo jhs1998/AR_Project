@@ -122,11 +122,8 @@ public class MapManager : MonoBehaviour
                 enemyButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(randomX - (mapWidth / 2), randomY - (mapHeight / 2)); // 랜덤 위치 조정
 
                 // EnemyButton 스크립트 초기화
-                EnemyButton enemyButtonScript = enemyButton.GetComponent<EnemyButton>();
-                if (enemyButtonScript != null)
-                {
-                    enemyButtonScript.Initialize(enemynum); // 적 버튼 인덱스 초기화
-                }
+                EnemyButton buttonScript = enemyButton.AddComponent<EnemyButton>();
+                buttonScript.SetBattleScene("BattleScene01");
             }
         }
     }
